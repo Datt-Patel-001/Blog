@@ -15,24 +15,41 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('admin_access_user')
                     <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                         {{ __('User') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('admin_access_role')
                     <x-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.index')">
                         {{ __('Role') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('admin_access_permission')
                     <x-nav-link :href="route('admin.permissions.index')" :active="request()->routeIs('admin.permissions.index')">
                         {{ __('Permission') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('user_access_category')
                     <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
                         {{ __('Category') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('user_access_tag')
                     <x-nav-link :href="route('admin.tags.index')" :active="request()->routeIs('admin.tags.index')">
                         {{ __('Tag') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('user_access_post')
                     <x-nav-link :href="route('admin.posts.index')" :active="request()->routeIs('admin.posts.index')">
                         {{ __('Post') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

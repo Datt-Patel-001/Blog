@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="pt-4 pl-4">
-                    <a href="#" class="text-blue-500 hover:underline">Add</a>
+                    <a href="{{ route('admin.users.create') }}" class="text-blue-500 hover:underline">Add</a>
                 </div>
                 <div class="pb-4 pl-4 pr-4 text-gray-900">
                     <div class="mt-6 overflow-x-auto">
@@ -57,11 +57,20 @@
                                                 {{ $user->email }}
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                                                @can('admin_update_user')
                                                 <a href="#" class="text-blue-500 hover:underline">Edit</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-red-500 hover:underline">Delete</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-green-500 hover:underline">view</a>
+                                                @endcan
+
+                                                @can('admin_delete_user')
+                                                <form action="{{ route('admin.users.destroy',$user->id)}}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <input type="submit" value="Delete" class="text-red-500 hover:underline">
+                                                </form>
+                                                @endcan
+                                                @can('admin_read_user')
+                                                <a href="{{ route('admin.users.show',$user->id) }}" class="text-green-500 hover:underline">View</a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
