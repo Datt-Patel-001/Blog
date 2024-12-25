@@ -58,7 +58,7 @@
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
                                                 @can('admin_update_user')
-                                                <a href="#" class="text-blue-500 hover:underline">Edit</a>
+                                                <a href="{{ route('admin.users.edit',$user->id)}}" class="text-blue-500 hover:underline">Edit</a>
                                                 @endcan
 
                                                 @can('admin_delete_user')

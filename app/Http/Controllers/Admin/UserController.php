@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,16 +27,22 @@ class UserController extends Controller
     public function create()
     {
         abort_if(Gate::denies('admin_create_user'),403);
-        // pass the roles with
-        return view('admin.user.create');
+        $roles = Role::all();
+        return view('admin.user.create',compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        User::create($request->all());
+    {   
+        $user = User::create(['user_name' => $request->user_name ,
+                              'first_name' => $request->first_name ,
+                              'last_name' => $request->last_name ,
+                              'password' => Hash::make($request->password) ,
+                              'profile_create_at' => now() ]);
+
+        $user->roles()->sync($request->roles);
         return redirect()->route('admin.users.index');
     }
 
@@ -53,15 +61,19 @@ class UserController extends Controller
     public function edit(User $user)
     {
         abort_if(Gate::denies('admin_update_user'),403);
-        return view('admin.user.edit',compact('user'));
+        $roles = Role::all();
+        return view('admin.user.edit',compact('user','roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->all());
+        $user->roles()->sync($request->roles);
+        return redirect()->route('admin.users.index');
+
     }
 
     /**
@@ -71,5 +83,6 @@ class UserController extends Controller
     {   
         abort_if(Gate::denies('admin_delete_user'),403);
         $user->delete();
+        return redirect()->route('admin.users.index');
     }
 }
