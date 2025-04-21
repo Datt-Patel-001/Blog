@@ -18,5 +18,6 @@ class Post extends Model
         'summary',
         'published',
         'published_at',
+        'user_id',
     ];
 }

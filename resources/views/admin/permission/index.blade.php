@@ -1,58 +1,45 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Roles') }}
-        </h2>
-    </x-slot>
-    
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="pt-4 pl-4">
-                    <a href="#" class="text-blue-500 hover:underline">Add</a>
+@extends('admin.dashboard')
+
+@section('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ __('Permissions') }}</h2>
                 </div>
-                <div class="pb-4 pl-4 pr-4 text-gray-900">
-                    <div class="mt-6 overflow-x-auto">
-                        <table class="min-w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        ID
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Title
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Example row -->
-                                 @isset($permissions)
-                                    @foreach($permissions as $permission)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $permission->id }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $permission->title }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                <a href="#" class="text-blue-500 hover:underline">Edit</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-red-500 hover:underline">Delete</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-green-500 hover:underline">view</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endisset
-                                <!-- Repeat rows for other users -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card-body">
+                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary mb-3">Add Permission</a>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @isset($permissions)
+                            @foreach($permissions as $permission)
+                            <tr>
+                                <td>{{ $permission->id }}</td>
+                                <td>{{ $permission->title }}</td>
+                                <td>
+                                    <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <form action="{{ route('admin.permissions.destroy', $permission->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endisset
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

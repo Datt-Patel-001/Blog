@@ -1,85 +1,58 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
-        </h2>
-    </x-slot>
-    
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="pt-4 pl-4">
-                    <a href="{{ route('admin.users.create') }}" class="text-blue-500 hover:underline">Add</a>
-                </div>
-                <div class="pb-4 pl-4 pr-4 text-gray-900">
-                    <div class="mt-6 overflow-x-auto">
-                        <table class="min-w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        ID
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Name
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                       First Name
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                       Last Name
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Email
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Example row -->
-                                 @isset($users)
-                                    @foreach($users as $user)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $user->id }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $user->user_name }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $user->first_name ?? '-'}}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $user->last_name ?? '-'}}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $user->email }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                @can('admin_update_user')
-                                                <a href="{{ route('admin.users.edit',$user->id)}}" class="text-blue-500 hover:underline">Edit</a>
-                                                @endcan
+@extends('admin.dashboard')
 
-                                                @can('admin_delete_user')
-                                                <form action="{{ route('admin.users.destroy',$user->id)}}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <input type="submit" value="Delete" class="text-red-500 hover:underline">
-                                                </form>
-                                                @endcan
-                                                @can('admin_read_user')
-                                                <a href="{{ route('admin.users.show',$user->id) }}" class="text-green-500 hover:underline">View</a>
-                                                @endcan
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endisset
-                                <!-- Repeat rows for other users -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+@section('content')
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="h4">{{ __('Users') }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Add User</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @isset($users)
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $user->user_name }}</td>
+                                    <td>{{ $user->first_name ?? '-' }}</td>
+                                    <td>{{ $user->last_name ?? '-' }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @can('admin_update_user')
+                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        @endcan
+                                        @can('admin_delete_user')
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="post" class="d-inline-block">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
+                                        @endcan
+                                        @can('admin_read_user')
+                                            <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-info">View</a>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endisset
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

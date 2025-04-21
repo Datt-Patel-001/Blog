@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,12 +35,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {   
-        $user = User::create(['user_name' => $request->user_name ,
-                              'first_name' => $request->first_name ,
-                              'last_name' => $request->last_name ,
-                              'password' => Hash::make($request->password) ,
-                              'profile_create_at' => now() ]);
-
+        $user = User::create($request->all());
         $user->roles()->sync($request->roles);
         return redirect()->route('admin.users.index');
     }
@@ -69,7 +63,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
-    {
+    {   
         $user->update($request->all());
         $user->roles()->sync($request->roles);
         return redirect()->route('admin.users.index');

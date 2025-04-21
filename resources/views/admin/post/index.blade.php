@@ -1,100 +1,60 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Roles') }}
-        </h2>
-    </x-slot>
-    
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="pt-4 pl-4">
-                    <a href="#" class="text-blue-500 hover:underline">Add</a>
-                </div>
-                <div class="pb-4 pl-4 pr-4 text-gray-900">
-                    <div class="mt-6 overflow-x-auto">
-                        <table class="min-w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        ID
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Title
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Description
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Meta Title
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Meta Description
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Slug
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Summary
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Published
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Published At
-                                    </th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Example row -->
-                                 @isset($posts)
-                                    @foreach($posts as $post)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->id }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->title }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->description }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->metaTitle }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->metDescription }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->slug }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->summary }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->published }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                {{ $role->publishedAt }}
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 text-sm text-gray-700">
-                                                <a href="#" class="text-blue-500 hover:underline">Edit</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-red-500 hover:underline">Delete</a>
-                                                <span class="mx-1">|</span>
-                                                <a href="#" class="text-green-500 hover:underline">view</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endisset
-                                <!-- Repeat rows for other users -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+@extends('admin.dashboard')
+
+@section('content')
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header bg-light">
+            <h2 class="h5 mb-0">Post</h2>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <a href="{{ route('admin.posts.create')}}" class="btn btn-primary">Add</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Meta Title</th>
+                            <th>Meta Description</th>
+                            <th>Slug</th>
+                            <th>Summary</th>
+                            <th>Published</th>
+                            <th>Published At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @isset($posts)
+                        @foreach($posts as $post)
+                        <tr>
+                            <td>{{ $post->id }}</td>
+                            <td>{{ $post->title }}</td>
+                            <td>{{ $post->description }}</td>
+                            <td>{{ $post->meta_title }}</td>
+                            <td>{{ $post->meta_description }}</td>
+                            <td>{{ $post->slug }}</td>
+                            <td>{{ $post->summary }}</td>
+                            <td>{{ $post->published }}</td>
+                            <td>{{ $post->published_at }}</td>
+                            <td>
+                                <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                                <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-sm btn-success">View</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endisset
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

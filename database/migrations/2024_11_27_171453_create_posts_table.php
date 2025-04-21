@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('meta_description')->nullable();
             $table->string('slug');
             $table->mediumText('summary')->nullable();
-            $table->boolean('publised')->nullable()->default(0);
+            $table->boolean('published')->nullable()->default(0);
             $table->dateTime('published_at');
             $table->timestamps();
         });

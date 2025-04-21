@@ -14,7 +14,6 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <!--  -->
         <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
   
         <!--These jQuery libraries for chosen  need to be included-->
@@ -46,11 +45,26 @@
         </div>
     </body>
     <script> 
-            $(document).ready(function () { 
-                var $prog = $(".roles").select2(); 
-                $(".Front-end").on("click", function () { 
-                    $prog.val().trigger("change"); 
-                }); 
+        $(document).ready(function () { 
+            var $prog = $(".select2").select2(); 
+            $(".Front-end").on("click", function () { 
+                $prog.val().trigger("change"); 
             }); 
-     </script>
+
+            $(".select-all").on("click", function (e) {
+                e.preventDefault()
+                var allValues = [];
+                $prog.find('option').each(function () {
+                    allValues.push($(this).val());
+                });
+                $prog.val(allValues).trigger("change");
+            });
+
+            // Remove All button functionality
+            $(".remove-all").on("click", function (e) {
+                e.preventDefault();
+                $prog.val(null).trigger("change");
+            });
+        });         
+    </script>
 </html>
