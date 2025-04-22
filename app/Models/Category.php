@@ -10,6 +10,8 @@ class Category extends Model
 {
     use HasFactory, Sluggable;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'title',
         'slug',
@@ -29,4 +31,10 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'post_category');
+    }
+
 }
