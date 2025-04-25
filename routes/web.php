@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\TagController;
-
+use App\Http\Controllers\Frontend\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +21,17 @@ use App\Http\Controllers\Admin\TagController;
 |
 */
 
-Route::get('/', function () {
-    // add the front end here
-    return view('welcome');
+Route::get('test2',function(){
+    return view('test');
 });
+
+Route::get('/about', function () {
+    return view('frontend.pages.about');
+})->name('about');
+
+Route::get('/single_post', function () {
+    return view('frontend.pages.single_post');
+})->name('single_post');
 
 Route::get('/test', function () {
     dd(request()->route());
@@ -44,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix'=>'admin','as' => 'admin.'],function(){
+Route::group(['prefix'=>'admin','as' => 'admin.','middleware' => ['auth']],function(){
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class)->except(['show']);
     Route::resource('permissions', PermissionController::class)->except(['show']);
@@ -54,4 +61,6 @@ Route::group(['prefix'=>'admin','as' => 'admin.'],function(){
     Route::resource('posts', PostController::class);
 });
 
+Route::get("/", [BlogController::class, 'index'])->name('blog.index');
+Route::get("/blog/{slug}", [BlogController::class, 'show'])->name('blog.show');
 require __DIR__.'/auth.php';

@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class,'user_role');
     }
 
+    public function posts() 
+    {
+        return $this->hasMany(Post::class);
+    }
+
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
     }
