@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             RolePermissionSeeder::class,
+            CitySeeder::class,
+            RestaurantSeeder::class,
+            DishSeeder::class,
+            OrderSeeder::class,
+            CartSeeder::class,
         ]);
     }
 }
